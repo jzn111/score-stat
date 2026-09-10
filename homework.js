@@ -47,7 +47,11 @@ console.log(avg([10, NaN, 30]));
 function getLen(str) {
   return str.length;
 }
-console.log(getLen(undefined));
+try {
+  console.log(getLen(undefined));
+} catch (e) {
+  console.log('Bug E 报错：', e.message);
+}
 
 let courses2 = [
   { name: '体育', score: 95, category: 'E' },
