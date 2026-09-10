@@ -42,3 +42,27 @@ console.log('带绩点：', withGPA(cleanCourses(courses)));
 console.log('加权绩点：', totalGPA(withGPA(cleanCourses(courses))));
 console.log('平均分：', averageScore(cleanCourses(courses)));
 console.log('不及格：', failedCourses(cleanCourses(courses)));
+
+const report = (list) => {
+  const valid = cleanCourses(list);
+  if (valid.length === 0) return '没有有效课程数据';
+  const gpaList = withGPA(valid);
+  const gpa = totalGPA(gpaList);
+  const avg = averageScore(valid);
+  const failed = failedCourses(valid);
+  return `有效课程${valid.length}门，加权绩点${gpa}，平均分${avg}；不及格科目：${failed.join('、') || '无'}`;
+};
+
+try {
+  console.log('--- 正常数据测试 ---');
+  console.log(report(courses));
+} catch (err) {
+  console.error('报告生成失败：', err.message);
+}
+
+try {
+  console.log('--- 空数据测试 ---');
+  console.log(report([]));
+} catch (err) {
+  console.error('报告生成失败：', err.message);
+}
