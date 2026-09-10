@@ -10,3 +10,35 @@ const courses = [
 ];
 
 console.table(courses);
+
+const cleanCourses = (list) => list.filter(c => c.credit > 0 && c.score >= 0 && c.score <= 100);
+
+const toGPA = (score) => {
+  if (score >= 90) return 4.0;
+  if (score >= 80) return 3.0;
+  if (score >= 70) return 2.0;
+  if (score >= 60) return 1.0;
+  return 0;
+};
+
+const withGPA = (list) => list.map(c => ({ ...c, gpa: toGPA(c.score) }));
+
+const totalGPA = (list) => {
+  if (list.length === 0) return 0;
+  const totalQP = list.reduce((sum, c) => sum + c.gpa * c.credit, 0);
+  const totalCr = list.reduce((sum, c) => sum + c.credit, 0);
+  return (totalQP / totalCr).toFixed(2);
+};
+
+const averageScore = (list) => {
+  if (list.length === 0) return 0;
+  return (list.reduce((sum, c) => sum + c.score, 0) / list.length).toFixed(2);
+};
+
+const failedCourses = (list) => list.filter(c => c.score < 60).map(c => c.name);
+
+console.log('清洗后：', cleanCourses(courses));
+console.log('带绩点：', withGPA(cleanCourses(courses)));
+console.log('加权绩点：', totalGPA(withGPA(cleanCourses(courses))));
+console.log('平均分：', averageScore(cleanCourses(courses)));
+console.log('不及格：', failedCourses(cleanCourses(courses)));
